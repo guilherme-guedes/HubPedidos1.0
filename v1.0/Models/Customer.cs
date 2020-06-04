@@ -16,5 +16,10 @@ namespace HubPedidos.v1.Models
         public DateTime Birth {get;set;}
         
         public virtual Order Order {get;set;}
+
+        public Customer(String name)
+        {
+            
+        }
     }
 }

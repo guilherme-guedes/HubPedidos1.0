@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HubPedidos.v1.Data;
+using HubPedidos.v1.Data.Repositories;
 using HubPedidos.v1.Data.Transaction;
+using HubPedidos.v1.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace v1._0
 {
@@ -30,7 +25,10 @@ namespace v1._0
         {
             services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("DB"));
             services.AddScoped<AbstractDataContext, DataContext>();
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<BaseRepository<Customer>, CustomerRepository>();
+            services.AddScoped<BaseRepository<Product>, ProductRepository>();
+            services.AddScoped<BaseRepository<Order>, OrderRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddControllers();
         }
 

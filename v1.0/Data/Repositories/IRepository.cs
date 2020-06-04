@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace HubPedidos.v1.Data.Repository
+namespace HubPedidos.v1.Data.Repositories
 {
 public interface IRepository<T> where T : class
 {

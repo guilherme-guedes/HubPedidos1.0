@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using HubPedidos.v1.Data.Transaction;
 using Microsoft.EntityFrameworkCore;
 
-namespace HubPedidos.v1.Data.Repository
+namespace HubPedidos.v1.Data.Repositories
 {
     public class BaseRepository<T> : IRepository<T> where T : class
     {
