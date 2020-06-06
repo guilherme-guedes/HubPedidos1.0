@@ -1,32 +1,60 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-
 namespace HubPedidos.v1.Models
 {
-    public class OrderItem
-    {
-        [Key]
-        public Guid Id {get;set;}
-        
-        [Required(ErrorMessage="Este campo é obrigatório")]
+    public class OrderItem : Entity
+    {        
         public Product Product {get;set;}
-
-        [Required(ErrorMessage="Este campo é obrigatório")]
-        [Range(0.1, 1000, ErrorMessage="A quantidade deve ser maior que 0")]
-        public double Quantity {get;set;}
-
-        public long Addition {get;set;}
-
-        public long Discount {get;set;}
-
-        [Required(ErrorMessage="Este campo é obrigatório")]
-        [Range(1, 100000000, ErrorMessage="O valor subtotal deve ser maior que 0 e menor que 100000000(1.000.000,00)")]
-        public long Subtotal {get;set;}
-
-        [Required(ErrorMessage="Este campo é obrigatório")]
-        [Range(1, 100000000, ErrorMessage="O valor total deve ser maior que 0 e menor que 100000000(1.000.000,00)")]
-        public long Total {get;set;}
-
+        public decimal Quantity {get; private set;}
+        public long UnitPrice {get; private set;}
+        public long Addition {get; private set;}
+        public long Discount {get; private set;}
+        public long Subtotal {get{ return (this.UnitPrice * this.Quantity).ToLongPrice(); }}
+        public long Total {get; private set;}
         public virtual Order Order { get;set;}
+
+        public OrderItem(double unitPrice, decimal quantity)
+        {
+            if(unitPrice < 0)
+                throw new System.Exception("Mehlorar tratamento de erros");
+            if(quantity <= 0)
+                throw new System.Exception("Mehlorar tratamento de erros");
+
+            this.UnitPrice = unitPrice.ToLongPrice();
+            this.Quantity = quantity;
+        }
+
+        public void Increase()
+        {
+            this.Quantity++;
+        }
+        
+        public void Decrease()
+        {
+            this.Quantity--;
+        }        
+        
+        public void ChangeQuantity(decimal quantity)
+        {
+            if(quantity <= 0 )  
+                throw new System.Exception("Mehlorar tratamento de erros");
+
+            this.Quantity = quantity;
+        }
+
+        public void AddDiscount(double discountValue)
+        {
+            if(discountValue <= 0 || discountValue > this.UnitPrice)
+                throw new System.Exception("Melhorar tratamentos de erros");
+
+            this.Discount = discountValue.ToLongPrice();
+        }
+        
+        public void AddAddition(double additionValue)
+        {
+            if(additionValue <= 0)
+                throw new System.Exception("Melhorar tratamentos de erros");
+
+            this.Addition = additionValue.ToLongPrice();
+        }
+        
     }
 }

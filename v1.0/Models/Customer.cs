@@ -1,25 +1,16 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace HubPedidos.v1.Models
 {
-    public class Customer 
+    public class Customer : Entity
     {
-        [Key]
-        public Guid Id {get;set;}
-
-        [Required(ErrorMessage="Este campo é obrigatório")]
-        [MaxLength(60, ErrorMessage="Este campo deve conter entre 5 a 60 caracteres")]
-        [MinLength(5, ErrorMessage="Este campo deve conter entre 5 a 60 caracteres")]
-        public String Name { get;set;}
-
-        public DateTime Birth {get;set;}
-        
+        public String Name { get; private set;}
+        public DateTime Birth {get;set;}        
         public virtual Order Order {get;set;}
 
         public Customer(String name)
         {
-            
+            this.Name = name;
         }
     }
 }

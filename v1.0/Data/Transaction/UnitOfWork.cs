@@ -7,21 +7,20 @@ public class UnitOfWork :  IUnitOfWork
  
         public UnitOfWork(AbstractDataContext context)
         {
-            Context = context;
+            this.Context = context;
         }
         public void Commit()
         {
-            Context.SaveChanges();
+            this.Context.SaveChanges();
         }
  
         public void Dispose()
         {
-           Context.Dispose();            
+           this.Context.Dispose();            
         }
 
         public void RollBack()
         {
-            throw new System.NotImplementedException();
         }
     }
 }

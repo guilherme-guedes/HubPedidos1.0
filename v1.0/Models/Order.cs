@@ -1,39 +1,43 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace HubPedidos.v1.Models
 {
-    public class Order
+    public class Order : Entity
     {
-        [Key]
-        public Guid Id { get;set;}
+        public Customer Customer { get; private set;}
+        public List<OrderItem> Items { get; private set;}
+        public long Amount {get; private set;}
+        public long Addition {get; private set;}
+        public long Discount {get; private set;}
+        public long TaxFee {get;private set;}
+        public long Subtotal {get{ return ((this.Amount + this.Addition) - this.Discount); }}
+        public long SubtotalWithoutTax {get{ return ((this.Amount + this.Addition) - this.Discount); }}
+        public long Total {get{ return (this.Subtotal + this.TaxFee); }}
 
-        [Required(ErrorMessage="Este campo é obrigatório")]
-        [Range(1, 1000000, ErrorMessage="A quantidade deve ser maior que 0")]
-        public long Amount {get;set;}
+        public Order(Customer customer, long discount = 0, long taxFee = 0, long addition = 0)
+        {
+            if(customer == null)
+                throw new System.Exception("Melhorar tratamentos de erros");
 
-        [Required(ErrorMessage="Este campo é obrigatório")]
-        public DateTimeOffset Date{get;set;}
+            this.Customer = customer;
+            this.Discount = discount;
+            this.TaxFee = taxFee;
+            this.Addition = addition;
+        } 
 
-        [Required(ErrorMessage="Este campo é obrigatório")]
-        public Customer Customer { get;set;}
+        public void AddItem(OrderItem item)
+        {
+            if(this.Items?.Count < 0)
+                this.Items = new List<OrderItem>();
 
-        [Required(ErrorMessage="Este campo é obrigatório")]
-        public List<OrderItem> Items { get;set;}
+            this.Items.Add(item);
+        }
+        public void AddTaxFee(double taxFeeValue)
+        {
+            if(taxFeeValue <= 0)
+                throw new System.Exception("Melhorar tratamentos de erros");
 
-        public long Addition {get;set;}
-
-        public long Discount {get;set;}
-
-        [Required(ErrorMessage="Este campo é obrigatório")]
-        [Range(1, 10000000000, ErrorMessage="O subtotal deve ser maior que 0 e menor que 100000000000(1000.000.000,00)")]
-        public long Subtotal {get;set;}
-
-        [Required(ErrorMessage="Este campo é obrigatório")]
-        [Range(1, 10000000000, ErrorMessage="O valor total deve ser maior que 0 e menor que 100000000000(100.000.000,00)")]
-        public long Total {get;set;}
-
-        public virtual SaleChannel SaleChannel { get;set;}
+            this.TaxFee = taxFeeValue.ToLongPrice();
+        }
     }
 }

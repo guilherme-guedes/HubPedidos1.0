@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HubPedidos.v1.Data;
 using HubPedidos.v1.Data.Repositories;
 using HubPedidos.v1.Data.Transaction;
 using HubPedidos.v1.Models;

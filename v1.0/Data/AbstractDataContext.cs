@@ -13,7 +13,6 @@ namespace HubPedidos.v1.Data
         internal DbSet<Order> Orders {get;set;}        
         internal DbSet<OrderItem> OrderItems {get;set;}
         internal DbSet<Product> Products {get;set;}
-        internal DbSet<SaleChannel> SaleChannels {get;set;}
 
         #endregion
     }
